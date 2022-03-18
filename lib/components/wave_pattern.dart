@@ -8,7 +8,7 @@ class Box extends StatelessWidget {
   final color, opacity;
 
   const Box(
-      {Key key, this.width, this.height, this.color, this.opacity, this.text})
+      {Key? key, this.width, this.height, this.color, this.opacity, this.text})
       : super(key: key);
 
   @override
@@ -38,7 +38,7 @@ class Box extends StatelessWidget {
 
 class WavePattern extends StatefulWidget {
   const WavePattern({
-    Key key,
+    Key? key,
     this.text,
     this.heightRatio,
   }) : super(key: key);
@@ -51,10 +51,10 @@ class WavePattern extends StatefulWidget {
 
 class _WavePatternState extends State<WavePattern>
     with TickerProviderStateMixin {
-  AnimationController _backController;
-  AnimationController _frontController;
-  Animation<double> backAnimation;
-  Animation<double> frontAnimation;
+  late AnimationController _backController;
+  late AnimationController _frontController;
+  late Animation<double> backAnimation;
+  late Animation<double> frontAnimation;
 
   @override
   void initState() {

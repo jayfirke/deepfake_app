@@ -21,11 +21,11 @@ class DeepfakeApp extends StatelessWidget {
 
 class MaterialAppWithTheme extends StatefulWidget {
   const MaterialAppWithTheme({
-    Key key,
+    Key? key,
   }) : super(key: key);
-  static void setLocale(BuildContext context, Locale locale) {
+  static void setLocale(BuildContext context, Locale? locale) {
     _MaterialAppWithThemeState state =
-        context.findAncestorStateOfType<_MaterialAppWithThemeState>();
+        context.findAncestorStateOfType<_MaterialAppWithThemeState>()!;
     state.setLocale(locale);
   }
 
@@ -34,9 +34,9 @@ class MaterialAppWithTheme extends StatefulWidget {
 }
 
 class _MaterialAppWithThemeState extends State<MaterialAppWithTheme> {
-  Locale _locale;
+  Locale? _locale;
 
-  void setLocale(Locale locale) {
+  void setLocale(Locale? locale) {
     setState(() {
       _locale = locale;
     });

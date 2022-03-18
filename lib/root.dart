@@ -19,7 +19,7 @@ class Root extends StatefulWidget {
 
 class _RootState extends State<Root> {
   int _currentIndex = 0;
-  HomeScreen homeScreen;
+  HomeScreen? homeScreen;
   final screens = [
     ClassifyScreen(),
     HistoryScreen(),
@@ -34,7 +34,7 @@ class _RootState extends State<Root> {
   void initState() {
     super.initState();
     homeScreen = HomeScreen(callback: this.callback);
-    screens.insert(0, homeScreen);
+    screens.insert(0, homeScreen!);
   }
 
   void callback(int i) {
@@ -72,10 +72,10 @@ class _RootState extends State<Root> {
   @override
   Widget build(BuildContext context) {
     final titles = [
-      LangLocalization.of(context).getTranslatedValue('routes')["home"],
-      LangLocalization.of(context).getTranslatedValue('routes')["classify"],
-      LangLocalization.of(context).getTranslatedValue('routes')["History"],
-      LangLocalization.of(context).getTranslatedValue('routes')["About"],
+      LangLocalization.of(context)!.getTranslatedValue('routes')!["home"],
+      LangLocalization.of(context)!.getTranslatedValue('routes')!["classify"],
+      LangLocalization.of(context)!.getTranslatedValue('routes')!["History"],
+      LangLocalization.of(context)!.getTranslatedValue('routes')!["About"],
     ];
     ThemeChanger _themeChanger = Provider.of(context);
     ThemeData _theme = _themeChanger.getTheme();
@@ -91,7 +91,7 @@ class _RootState extends State<Root> {
                     _currentIndex = index;
                   });
                 },
-                children: screens,
+                children: screens as List<Widget>,
                 controller: controller,
               ),
               backgroundColor: _theme.colorScheme.background,
@@ -106,40 +106,32 @@ class _RootState extends State<Root> {
                 items: [
                   BottomNavigationBarItem(
                     backgroundColor: _theme.colorScheme.secondary,
-                    title: Text(
-                      LangLocalization.of(context)
-                          .getTranslatedValue('routes')["home"],
-                    ),
+                    label: LangLocalization.of(context)!
+                        .getTranslatedValue('routes')!["home"],
                     icon: Icon(
                       FontAwesomeIcons.home,
                     ),
                   ),
                   BottomNavigationBarItem(
                     backgroundColor: _theme.colorScheme.secondary,
-                    title: Text(
-                      LangLocalization.of(context)
-                          .getTranslatedValue('routes')["classify"],
-                    ),
+                    label: LangLocalization.of(context)!
+                        .getTranslatedValue('routes')!["classify"],
                     icon: Icon(
                       FontAwesomeIcons.atom,
                     ),
                   ),
                   BottomNavigationBarItem(
                     backgroundColor: _theme.colorScheme.secondary,
-                    title: Text(
-                      LangLocalization.of(context)
-                          .getTranslatedValue('routes')["History"],
-                    ),
+                    label: LangLocalization.of(context)!
+                        .getTranslatedValue('routes')!["History"],
                     icon: Icon(
                       FontAwesomeIcons.history,
                     ),
                   ),
                   BottomNavigationBarItem(
                     backgroundColor: _theme.colorScheme.secondary,
-                    title: Text(
-                      LangLocalization.of(context)
-                          .getTranslatedValue('routes')["About"],
-                    ),
+                    label: LangLocalization.of(context)!
+                        .getTranslatedValue('routes')!["About"],
                     icon: Icon(
                       FontAwesomeIcons.users,
                     ),

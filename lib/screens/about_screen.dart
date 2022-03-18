@@ -11,7 +11,7 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutScreenState extends State<AboutScreen> {
-  List<Map<String, dynamic>> team;
+  late List<Map<String, dynamic>> team;
   List<Widget> teamList = [];
   _AboutScreenState() {
     this.team = [
@@ -106,13 +106,13 @@ class _AboutScreenState extends State<AboutScreen> {
 }
 
 class TeamCard extends StatelessWidget {
-  String designation;
+  String? designation;
   final github;
-  String name;
+  String? name;
   final linkedin;
   final img;
   final url;
-  String quote;
+  String? quote;
   final quoteHeight;
   final index;
   TeamCard(
@@ -172,16 +172,16 @@ class TeamCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      LangLocalization.of(context)
-                          .getTranslatedValue('about')["name${this.index + 1}"],
+                      LangLocalization.of(context)!
+                          .getTranslatedValue('about')!["name${this.index + 1}"],
                       style: TextStyle(
                         color: _theme.colorScheme.onSurface,
                         fontSize: 20,
                       ),
                     ),
                     Text(
-                      LangLocalization.of(context).getTranslatedValue(
-                          'about')["designation${this.index + 1}"],
+                      LangLocalization.of(context)!.getTranslatedValue(
+                          'about')!["designation${this.index + 1}"],
                       style: TextStyle(
                         color: _theme.colorScheme.onSurface,
                         fontSize: 14,
@@ -234,8 +234,8 @@ class TeamCard extends StatelessWidget {
                         Container(
                           width: 178,
                           child: Text(
-                            LangLocalization.of(context).getTranslatedValue(
-                                'about')["quote${this.index + 1}"],
+                            LangLocalization.of(context)!.getTranslatedValue(
+                                'about')!["quote${this.index + 1}"],
                             overflow: TextOverflow.visible,
                             textAlign: TextAlign.center,
                             style: TextStyle(

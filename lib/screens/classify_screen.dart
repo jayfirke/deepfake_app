@@ -17,11 +17,11 @@ class ClassifyScreen extends StatefulWidget {
 }
 
 class _ClassifyScreenState extends State<ClassifyScreen> {
-  VideoPlayerController _videoPlayerController;
-  ChewieController chewieController;
-  File file;
-  bool isVideo;
-  bool isAPICalled;
+  VideoPlayerController? _videoPlayerController;
+  ChewieController? chewieController;
+  File? file;
+  late bool isVideo;
+  bool? isAPICalled;
 
   Dio dio = new Dio();
 
@@ -43,11 +43,11 @@ class _ClassifyScreenState extends State<ClassifyScreen> {
 
 
     if (file != null) {
-      if (file.path.split(".")[1] == "mp4") {
-        _videoPlayerController = VideoPlayerController.file(File(file.path));
+      if (file.paths[0]!.split(".")[1] == "mp4") {
+        _videoPlayerController = VideoPlayerController.file(File(file.paths[0]!));
 
         chewieController = ChewieController(
-          videoPlayerController: _videoPlayerController,
+          videoPlayerController: _videoPlayerController!,
           autoPlay: true,
           looping: false,
           materialProgressColors: ChewieProgressColors(
@@ -57,10 +57,10 @@ class _ClassifyScreenState extends State<ClassifyScreen> {
         this.isVideo = true;
       } else {
         this.isVideo = false;
-        print(file.path);
+        print(file.paths);
       }
       setState(() {
-        this.file = file;
+        this.file = file as File?;
       });
     }
   }
@@ -69,20 +69,20 @@ class _ClassifyScreenState extends State<ClassifyScreen> {
     this.setState(() {
       this.isAPICalled = true;
     });
-    FileStat stats = file.statSync();
-    String text;
+    FileStat stats = file!.statSync();
+    String? text;
     var response;
 
     if (stats.size < MaxFileSizeinMB * 1024 * 1024) {
-      if (file.path.split(".")[1] == "mp4") {
+      if (file!.path.split(".")[1] == "mp4") {
         FormData formData = new FormData();
-        formData.fields.add(MapEntry("userId", userId));
+        formData.fields.add(MapEntry("userId", userId!));
         formData.files
-            .add(MapEntry("video", await MultipartFile.fromFile(file.path)));
+            .add(MapEntry("video", await MultipartFile.fromFile(file!.path)));
 
         Options options = new Options(
             contentType: "form-data",
-            headers: {'Authorization': 'Bearer ' + bearerToken});
+            headers: {'Authorization': 'Bearer ' + bearerToken!});
 
         response = await dio.post(serverURL + "/classify",
             data: formData, options: options);
@@ -96,33 +96,33 @@ class _ClassifyScreenState extends State<ClassifyScreen> {
         print("-------------------------");
 
         if (response.statusCode == 200) {
-          text = LangLocalization.of(context)
-              .getTranslatedValue('classify')["vid_response200"];
+          text = LangLocalization.of(context)!
+              .getTranslatedValue('classify')!["vid_response200"];
         } else if (response.statusCode == 412 || response.statusCode == 413) {
-          text = LangLocalization.of(context)
-              .getTranslatedValue('classify')["vid_response412"];
+          text = LangLocalization.of(context)!
+              .getTranslatedValue('classify')!["vid_response412"];
         } else if (response.statusCode == 400) {
-          text = LangLocalization.of(context)
-              .getTranslatedValue('classify')["vid_response400"];
+          text = LangLocalization.of(context)!
+              .getTranslatedValue('classify')!["vid_response400"];
         } else if (response.statusCode == 422) {
-          text = LangLocalization.of(context)
-              .getTranslatedValue('classify')["vid_response422"];
+          text = LangLocalization.of(context)!
+              .getTranslatedValue('classify')!["vid_response422"];
         } else if (response.statusCode == 429) {
-          text = LangLocalization.of(context)
-              .getTranslatedValue('classify')["vid_response429"];
+          text = LangLocalization.of(context)!
+              .getTranslatedValue('classify')!["vid_response429"];
         } else {
-          text = LangLocalization.of(context)
-              .getTranslatedValue('classify')["vid_responseX"];
+          text = LangLocalization.of(context)!
+              .getTranslatedValue('classify')!["vid_responseX"];
         }
       } else {
         FormData formData = new FormData();
-        formData.fields.add(MapEntry("userId", userId));
+        formData.fields.add(MapEntry("userId", userId!));
         formData.files
-            .add(MapEntry("image", await MultipartFile.fromFile(file.path)));
+            .add(MapEntry("image", await MultipartFile.fromFile(file!.path)));
 
         Options options = new Options(
             contentType: "form-data",
-            headers: {'Authorization': 'Bearer ' + bearerToken});
+            headers: {'Authorization': 'Bearer ' + bearerToken!});
 
         response = await dio.post(serverURL + "/get-image",
             data: formData, options: options);
@@ -133,19 +133,19 @@ class _ClassifyScreenState extends State<ClassifyScreen> {
         print("-------------------------");
 
         if (response.statusCode == 200) {
-          text = LangLocalization.of(context)
-              .getTranslatedValue('classify')["img_response200"];
+          text = LangLocalization.of(context)!
+              .getTranslatedValue('classify')!["img_response200"];
         } else if (response.statusCode == 429) {
-          text = LangLocalization.of(context)
-              .getTranslatedValue('classify')["img_response429"];
+          text = LangLocalization.of(context)!
+              .getTranslatedValue('classify')!["img_response429"];
         } else {
-          text = LangLocalization.of(context)
-              .getTranslatedValue('classify')["img_responseX"];
+          text = LangLocalization.of(context)!
+              .getTranslatedValue('classify')!["img_responseX"];
         }
       }
     } else {
-      text = LangLocalization.of(context)
-          .getTranslatedValue('classify')["img_responseY"];
+      text = LangLocalization.of(context)!
+          .getTranslatedValue('classify')!["img_responseY"];
     }
     this.setState(() {
       this.isAPICalled = false;
@@ -158,7 +158,7 @@ class _ClassifyScreenState extends State<ClassifyScreen> {
         return AlertDialog(
           backgroundColor: _theme.colorScheme.surface,
           content: Text(
-            text,
+            text!,
             style: TextStyle(
               color: _theme.colorScheme.onSurface,
             ),
@@ -166,8 +166,8 @@ class _ClassifyScreenState extends State<ClassifyScreen> {
           actions: <Widget>[
             new FlatButton(
               child: Text(
-                LangLocalization.of(context)
-                    .getTranslatedValue('classify')["dialog"],
+                LangLocalization.of(context)!
+                    .getTranslatedValue('classify')!["dialog"],
                 style: TextStyle(
                   color: _theme.colorScheme.onSurface,
                 ),
@@ -184,8 +184,8 @@ class _ClassifyScreenState extends State<ClassifyScreen> {
 
   @override
   void dispose() {
-    if (_videoPlayerController != null) _videoPlayerController.dispose();
-    if (chewieController != null) chewieController.dispose();
+    if (_videoPlayerController != null) _videoPlayerController!.dispose();
+    if (chewieController != null) chewieController!.dispose();
     super.dispose();
   }
 
@@ -201,8 +201,8 @@ class _ClassifyScreenState extends State<ClassifyScreen> {
               ? Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Text(
-                    LangLocalization.of(context)
-                        .getTranslatedValue('classify')["intro"],
+                    LangLocalization.of(context)!
+                        .getTranslatedValue('classify')!["intro"],
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 20.0,
@@ -214,10 +214,10 @@ class _ClassifyScreenState extends State<ClassifyScreen> {
                   padding: const EdgeInsets.all(20.0),
                   child: Container(
                     child: this.isVideo
-                        ? Chewie(controller: chewieController)
+                        ? Chewie(controller: chewieController!)
                         : Padding(
                             padding: const EdgeInsets.all(6.0),
-                            child: Image.file(file),
+                            child: Image.file(file!),
                           ),
                     height: MediaQuery.of(context).size.height / 2,
                     width: MediaQuery.of(context).size.height / 2,
@@ -242,10 +242,10 @@ class _ClassifyScreenState extends State<ClassifyScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 28.0),
                     child: Text(
                       this.file == null
-                          ? LangLocalization.of(context)
-                              .getTranslatedValue('classify')["upload"]
-                          : LangLocalization.of(context)
-                              .getTranslatedValue('classify')["classify"],
+                          ? LangLocalization.of(context)!
+                              .getTranslatedValue('classify')!["upload"]
+                          : LangLocalization.of(context)!
+                              .getTranslatedValue('classify')!["classify"],
                       style: TextStyle(
                         color: _theme.colorScheme.onPrimary,
                       ),

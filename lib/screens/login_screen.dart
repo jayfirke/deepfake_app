@@ -6,9 +6,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../globals.dart';
 
 class LoginScreen extends StatefulWidget {
-  final Function callback;
+  final Function? callback;
 
-  const LoginScreen({Key key, this.callback}) : super(key: key);
+  const LoginScreen({Key? key, this.callback}) : super(key: key);
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -19,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isApiCalled = false;
   Dio dio = new Dio();
 
-  TextEditingController nameController,
+  TextEditingController? nameController,
       usernameController,
       emailController,
       passwordController;
@@ -35,18 +35,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    passwordController.dispose();
-    emailController.dispose();
-    usernameController.dispose();
-    nameController.dispose();
+    passwordController!.dispose();
+    emailController!.dispose();
+    usernameController!.dispose();
+    nameController!.dispose();
 
     super.dispose();
   }
 
   handleLogin(BuildContext context) async {
-    if (_formKey.currentState.validate()) {
-      final username = usernameController.text;
-      final password = passwordController.text;
+    if (_formKey.currentState!.validate()) {
+      final username = usernameController!.text;
+      final password = passwordController!.text;
 
       try {
         this.setState(() {
@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
 
         if (response.data["success"]) {
-          this.widget.callback(response.data);
+          this.widget.callback!(response.data);
         }
         this.setState(() {
           this.isApiCalled = false;
@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
         this.setState(() {
           this.isApiCalled = false;
         });
-        if (e.response.statusCode == 401) {
+        if (e.response!.statusCode == 401) {
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -107,11 +107,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   handleSignup(BuildContext context) async {
-    if (_formKey.currentState.validate()) {
-      final name = nameController.text;
-      final email = emailController.text;
-      final username = usernameController.text;
-      final password = passwordController.text;
+    if (_formKey.currentState!.validate()) {
+      final name = nameController!.text;
+      final email = emailController!.text;
+      final username = usernameController!.text;
+      final password = passwordController!.text;
       try {
         this.setState(() {
           this.isApiCalled = true;
@@ -139,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
         this.setState(() {
           this.isApiCalled = false;
         });
-        if (e.response.statusCode != 200)
+        if (e.response!.statusCode != 200)
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -357,7 +357,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   setState(() {
                     isLogin = !isLogin;
-                    _formKey.currentState.reset();
+                    _formKey.currentState!.reset();
                   });
                 }),
             SizedBox(
@@ -372,7 +372,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 class OutlinedTextFormField extends StatefulWidget {
   const OutlinedTextFormField({
-    Key key,
+    Key? key,
     this.prefixIcon,
     this.suffixIcon,
     this.hintText,

@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 bool downloaderInitialized = false;
 
 class ImageItem extends StatefulWidget {
-  final String imageName;
+  final String? imageName;
   final imageId;
   final status;
   final date;
@@ -31,7 +31,7 @@ class ImageItem extends StatefulWidget {
 }
 
 class _ImageItemState extends State<ImageItem> {
-  String imageFile = "";
+  String? imageFile = "";
 
   final Dio dio = new Dio();
 
@@ -55,9 +55,9 @@ class _ImageItemState extends State<ImageItem> {
 
     Options options = new Options(
         contentType: "application/json",
-        headers: {'Authorization': 'Bearer ' + bearerToken});
+        headers: {'Authorization': 'Bearer ' + bearerToken!});
 
-    Map<String, String> query = {
+    Map<String, String?> query = {
       "userId": userId,
       "imageId": this.widget.imageId
     };
@@ -79,9 +79,9 @@ class _ImageItemState extends State<ImageItem> {
 
     Options options = new Options(
         contentType: "application/json",
-        headers: {'Authorization': 'Bearer ' + bearerToken});
+        headers: {'Authorization': 'Bearer ' + bearerToken!});
 
-    Map<String, String> query = {
+    Map<String, String?> query = {
       "userId": userId,
       "imageId": this.widget.imageId
     };
@@ -99,7 +99,7 @@ class _ImageItemState extends State<ImageItem> {
             showNotification: true,
             openFileFromNotification: true,
             fileName: "Report-" +
-                this.widget.imageName.split(".")[0] +
+                this.widget.imageName!.split(".")[0] +
                 "-" +
                 res.data["report"]);
       });
@@ -110,19 +110,19 @@ class _ImageItemState extends State<ImageItem> {
     print("Delete Image");
     Options options = new Options(
         contentType: "application/x-www-form-urlencoded",
-        headers: {'Authorization': 'Bearer ' + bearerToken});
+        headers: {'Authorization': 'Bearer ' + bearerToken!});
 
     Map data = {"userId": userId, "imageId": this.widget.imageId};
     var response = await dio.post(serverURL + "/remove/image",
         data: data, options: options);
 
-    String text = "";
+    String? text = "";
     if (response.statusCode == 200) {
-      text = LangLocalization.of(context)
-          .getTranslatedValue('imgItem')["delsuccess"];
+      text = LangLocalization.of(context)!
+          .getTranslatedValue('imgItem')!["delsuccess"];
     } else {
       text =
-          LangLocalization.of(context).getTranslatedValue('imgItem')["delErr"];
+          LangLocalization.of(context)!.getTranslatedValue('imgItem')!["delErr"];
     }
     showDialog(
       context: context,
@@ -132,7 +132,7 @@ class _ImageItemState extends State<ImageItem> {
         return AlertDialog(
           backgroundColor: _theme.colorScheme.surface,
           content: Text(
-            text,
+            text!,
             style: TextStyle(
               color: _theme.colorScheme.onSurface,
             ),
@@ -140,8 +140,8 @@ class _ImageItemState extends State<ImageItem> {
           actions: <Widget>[
             new FlatButton(
               child: Text(
-                LangLocalization.of(context)
-                    .getTranslatedValue('classify')["dialog"],
+                LangLocalization.of(context)!
+                    .getTranslatedValue('classify')!["dialog"],
                 style: TextStyle(
                   color: _theme.colorScheme.onSurface,
                 ),
@@ -175,7 +175,7 @@ class _ImageItemState extends State<ImageItem> {
           showNotification: true,
           openFileFromNotification: true,
           fileName:
-              "Classified-" + this.widget.imageName.split(".")[0] + ".jpg");
+              "Classified-" + this.widget.imageName!.split(".")[0] + ".jpg");
     });
   }
 
@@ -242,8 +242,8 @@ class _ImageItemState extends State<ImageItem> {
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
-                            LangLocalization.of(context)
-                                .getTranslatedValue('imgItem')["noFace"],
+                            LangLocalization.of(context)!
+                                .getTranslatedValue('imgItem')!["noFace"],
                             style: TextStyle(
                               fontSize: 20,
                               color: _theme.colorScheme.onSurface,
@@ -257,8 +257,8 @@ class _ImageItemState extends State<ImageItem> {
                   top: MediaQuery.of(context).size.height * 0.03,
                 ),
                 child: Text(
-                  LangLocalization.of(context)
-                          .getTranslatedValue('imgItem')["filename"] +
+                  LangLocalization.of(context)!
+                          .getTranslatedValue('imgItem')!["filename"] +
                       this.widget.imageName,
                   style: TextStyle(
                     fontSize: 20,
@@ -271,8 +271,8 @@ class _ImageItemState extends State<ImageItem> {
                   top: MediaQuery.of(context).size.height * 0.03,
                 ),
                 child: Text(
-                  LangLocalization.of(context)
-                          .getTranslatedValue('imgItem')["status"] +
+                  LangLocalization.of(context)!
+                          .getTranslatedValue('imgItem')!["status"] +
                       this.widget.status,
                   style: TextStyle(
                     fontSize: 20,
@@ -285,12 +285,12 @@ class _ImageItemState extends State<ImageItem> {
                   top: MediaQuery.of(context).size.height * 0.03,
                 ),
                 child: Text(
-                  LangLocalization.of(context)
-                          .getTranslatedValue('imgItem')["date"] +
+                  LangLocalization.of(context)!
+                          .getTranslatedValue('imgItem')!["date"] +
                       new DateFormat.yMd(
                         Localizations.localeOf(context).languageCode +
                             '_' +
-                            Localizations.localeOf(context).countryCode,
+                            Localizations.localeOf(context).countryCode!,
                       ).add_jm().format(
                             DateTime.parse(this.widget.date).add(
                               DateTime.now().timeZoneOffset,
@@ -313,10 +313,10 @@ class _ImageItemState extends State<ImageItem> {
   Widget build(BuildContext context) {
     ThemeChanger _themeChanger = Provider.of(context);
     ThemeData _theme = _themeChanger.getTheme();
-    final List<String> choices = <String>[
-      LangLocalization.of(context).getTranslatedValue('history')["op1"],
-      LangLocalization.of(context).getTranslatedValue('imgItem')["op2"],
-      LangLocalization.of(context).getTranslatedValue('imgItem')["op3"],
+    final List<String?> choices = <String?>[
+      LangLocalization.of(context)!.getTranslatedValue('history')!["op1"],
+      LangLocalization.of(context)!.getTranslatedValue('imgItem')!["op2"],
+      LangLocalization.of(context)!.getTranslatedValue('imgItem')!["op3"],
     ];
     return Card(
       elevation: 2,
@@ -333,7 +333,7 @@ class _ImageItemState extends State<ImageItem> {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: Text(
-                  this.widget.imageName,
+                  this.widget.imageName!,
                   style: TextStyle(
                     color: _theme.colorScheme.onSurface,
                     fontSize: 16,
@@ -356,7 +356,7 @@ class _ImageItemState extends State<ImageItem> {
               color: _theme.colorScheme.surface,
               itemBuilder: (BuildContext context) {
                 return choices.map(
-                  (String choice) {
+                  (String? choice) {
                     int n = choices.indexOf(choice);
                     return PopupMenuItem<String>(
                       value: n.toString(),
@@ -371,7 +371,7 @@ class _ImageItemState extends State<ImageItem> {
                             ),
                           ),
                           Text(
-                            choice,
+                            choice!,
                             style: TextStyle(
                               color: _theme.colorScheme.onSurface,
                             ),

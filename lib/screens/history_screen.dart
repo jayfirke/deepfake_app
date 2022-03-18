@@ -18,8 +18,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
   var temp = 0;
   Dio dio = new Dio();
   bool isAPICalled = false;
-  List<Map<String, String>> videos = [];
-  List<Map<String, String>> images = [];
+  List<Map<String, String?>> videos = [];
+  List<Map<String, String?>> images = [];
 
   List<Widget> historyList = [];
 
@@ -42,7 +42,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   getHistory() async {
     Options options = new Options(
         contentType: "application/x-www-form-urlencoded",
-        headers: {'Authorization': 'Bearer ' + bearerToken});
+        headers: {'Authorization': 'Bearer ' + bearerToken!});
 
     Map data = {"userId": userId};
     var response = await dio.post(serverURL + "/fetch-history",
@@ -70,12 +70,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
       });
     }
 
-    List<Map<String, String>> history = [];
+    List<Map<String, String?>> history = [];
     history = this.videos;
     history.addAll(this.images);
     history.sort((a, b) {
-      return DateTime.parse(b["createdAt"])
-          .difference(DateTime.parse(a["createdAt"]))
+      return DateTime.parse(b["createdAt"]!)
+          .difference(DateTime.parse(a["createdAt"]!))
           .inMilliseconds;
     });
 
@@ -83,7 +83,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       for (int i = 0; i < history.length; i++)
         this.historyList.add(
               Padding(
-                key: Key(history[i]["_id"]),
+                key: Key(history[i]["_id"]!),
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).size.height * 0.015),
                 child: (history[i]["type"] == "video")
@@ -143,8 +143,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             Padding(
                               padding: const EdgeInsets.only(top: 16.0),
                               child: Text(
-                                LangLocalization.of(context)
-                                    .getTranslatedValue('history')["msg"],
+                                LangLocalization.of(context)!
+                                    .getTranslatedValue('history')!["msg"],
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: _theme.colorScheme.onBackground,

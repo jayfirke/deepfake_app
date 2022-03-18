@@ -7,16 +7,16 @@ import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
-  final Function callback;
+  final Function? callback;
 
-  const HomeScreen({Key key, this.callback}) : super(key: key);
+  const HomeScreen({Key? key, this.callback}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  YoutubePlayerController _controller;
+  late YoutubePlayerController _controller;
 
   @override
   void initState() {
@@ -88,8 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             alignment: Alignment.topLeft,
                             padding: EdgeInsets.only(bottom: 8),
                             child: Text(
-                              LangLocalization.of(context)
-                                  .getTranslatedValue('home')["title"],
+                              LangLocalization.of(context)!
+                                  .getTranslatedValue('home')!["title"],
                               style: TextStyle(
                                 color: _theme.colorScheme.onSurface,
                                 fontSize: 20,
@@ -101,8 +101,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               bottom: 12,
                             ),
                             child: Text(
-                              LangLocalization.of(context)
-                                  .getTranslatedValue('home')["para"],
+                              LangLocalization.of(context)!
+                                  .getTranslatedValue('home')!["para"],
                               style: TextStyle(
                                 color: _theme.colorScheme.onSurface,
                                 fontSize: 16,
@@ -123,10 +123,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 color: _theme.colorScheme.primary,
-                onPressed: () => this.widget.callback(1),
+                onPressed: () => this.widget.callback!(1),
                 child: Text(
-                  LangLocalization.of(context)
-                      .getTranslatedValue('home')["button"],
+                  LangLocalization.of(context)!
+                      .getTranslatedValue('home')!["button"],
                   style: TextStyle(
                     color: _theme.colorScheme.onPrimary,
                   ),

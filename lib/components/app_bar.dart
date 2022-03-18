@@ -9,14 +9,14 @@ import '../main.dart';
 
 class DeepfakeAppBar extends StatefulWidget implements PreferredSizeWidget {
   DeepfakeAppBar({
-    Key key,
-    @required this.title,
+    Key? key,
+    required this.title,
     this.callback,
   }) : super(key: key);
 
-  final String title;
+  final String? title;
 
-  final Function callback;
+  final Function? callback;
 
   @override
   _DeepfakeAppBarState createState() => _DeepfakeAppBarState();
@@ -33,7 +33,7 @@ class Logout extends StatelessWidget {
     ThemeChanger _themeChanger = Provider.of(context);
     ThemeData _theme = _themeChanger.getTheme();
     return Text(
-      LangLocalization.of(context).getTranslatedValue('appbar')["logout"],
+      LangLocalization.of(context)!.getTranslatedValue('appbar')!["logout"],
       style: TextStyle(
         color: _theme.colorScheme.onBackground,
       ),
@@ -44,45 +44,45 @@ class Logout extends StatelessWidget {
 class Language extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> languages = [
+    final List<Map<String, String?>> languages = [
       {
         "language":
-            LangLocalization.of(context).getTranslatedValue('appbar')["eng"],
+            LangLocalization.of(context)!.getTranslatedValue('appbar')!["eng"],
         "value": "en"
       },
       {
         "language":
-            LangLocalization.of(context).getTranslatedValue('appbar')["hindi"],
+            LangLocalization.of(context)!.getTranslatedValue('appbar')!["hindi"],
         "value": "hi"
       },
       {
         "language":
-            LangLocalization.of(context).getTranslatedValue('appbar')["guj"],
+            LangLocalization.of(context)!.getTranslatedValue('appbar')!["guj"],
         "value": "gu"
       },
       {
         "language":
-            LangLocalization.of(context).getTranslatedValue('appbar')["bn"],
+            LangLocalization.of(context)!.getTranslatedValue('appbar')!["bn"],
         "value": "bn"
       },
       {
         "language":
-            LangLocalization.of(context).getTranslatedValue('appbar')["mr"],
+            LangLocalization.of(context)!.getTranslatedValue('appbar')!["mr"],
         "value": "mr"
       },
       {
         "language":
-            LangLocalization.of(context).getTranslatedValue('appbar')["ml"],
+            LangLocalization.of(context)!.getTranslatedValue('appbar')!["ml"],
         "value": "ml"
       },
       {
         "language":
-            LangLocalization.of(context).getTranslatedValue('appbar')["te"],
+            LangLocalization.of(context)!.getTranslatedValue('appbar')!["te"],
         "value": "te"
       },
       {
         "language":
-            LangLocalization.of(context).getTranslatedValue('appbar')["pa"],
+            LangLocalization.of(context)!.getTranslatedValue('appbar')!["pa"],
         "value": "pa"
       },
     ];
@@ -90,14 +90,14 @@ class Language extends StatelessWidget {
     ThemeData _theme = _themeChanger.getTheme();
     return new DropdownButton<String>(
       hint: Text(
-        LangLocalization.of(context).getTranslatedValue('appbar')["lang"],
+        LangLocalization.of(context)!.getTranslatedValue('appbar')!["lang"],
         style: TextStyle(color: _theme.colorScheme.onBackground),
       ),
       dropdownColor: _theme.colorScheme.background,
-      items: languages.map((Map<String, String> language) {
+      items: languages.map((Map<String, String?> language) {
         return new DropdownMenuItem<String>(
           onTap: () {
-            Locale _temp;
+            Locale? _temp;
             switch (language["value"]) {
               case 'bn':
                 _temp = Locale('bn', 'IN');
@@ -129,7 +129,7 @@ class Language extends StatelessWidget {
           },
           value: language["value"],
           child: new Text(
-            language["language"],
+            language["language"]!,
             style: TextStyle(color: _theme.colorScheme.onBackground),
           ),
         );
@@ -172,7 +172,7 @@ class _DeepfakeAppBarState extends State<DeepfakeAppBar> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         title: Text(
-          widget.title,
+          widget.title!,
           style: TextStyle(
             color: _theme.colorScheme.onBackground,
           ),
@@ -190,7 +190,7 @@ class _DeepfakeAppBarState extends State<DeepfakeAppBar> {
                   _themeChanger.setTheme(DeepfakeTheme.lightTheme);
                 }
               } else {
-                this.widget.callback();
+                this.widget.callback!();
               }
             },
             itemBuilder: (context) {
@@ -215,7 +215,7 @@ class _DeepfakeAppBarState extends State<DeepfakeAppBar> {
 
 class ThemeChangerWidget extends StatefulWidget {
   const ThemeChangerWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -231,7 +231,7 @@ class _ThemeChangerWidgetState extends State<ThemeChangerWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          LangLocalization.of(context).getTranslatedValue('appbar')["theme"],
+          LangLocalization.of(context)!.getTranslatedValue('appbar')!["theme"],
           style: TextStyle(
             color: _theme.colorScheme.onSurface,
           ),

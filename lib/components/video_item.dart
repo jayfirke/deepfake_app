@@ -19,7 +19,7 @@ import 'package:video_player/video_player.dart';
 bool downloaderInitialized = false;
 
 class VideoItem extends StatefulWidget {
-  final String videoName;
+  final String? videoName;
   final videoId;
   final status;
   final date;
@@ -40,11 +40,11 @@ class VideoItem extends StatefulWidget {
 }
 
 class _VideoItemState extends State<VideoItem> {
-  VideoPlayerController _videoPlayerController;
+  VideoPlayerController? _videoPlayerController;
 
-  ChewieController chewieController;
+  ChewieController? chewieController;
 
-  String videoFile = "";
+  String? videoFile = "";
 
   final Dio dio = new Dio();
 
@@ -66,9 +66,9 @@ class _VideoItemState extends State<VideoItem> {
   getVideoPath() async {
     Options options = new Options(
         contentType: "application/json",
-        headers: {'Authorization': 'Bearer ' + bearerToken});
+        headers: {'Authorization': 'Bearer ' + bearerToken!});
 
-    Map<String, String> query = {
+    Map<String, String?> query = {
       "userId": userId,
       "videoId": this.widget.videoId
     };
@@ -81,7 +81,7 @@ class _VideoItemState extends State<VideoItem> {
       );
       videoFile = response.data["videoFile"];
     } on DioError catch (e) {
-      if (e.response.statusCode != 200)
+      if (e.response!.statusCode != 200)
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -90,8 +90,8 @@ class _VideoItemState extends State<VideoItem> {
             return AlertDialog(
               backgroundColor: _theme.colorScheme.surface,
               content: Text(
-                LangLocalization.of(context)
-                    .getTranslatedValue('vidItem')["errmsg"],
+                LangLocalization.of(context)!
+                    .getTranslatedValue('vidItem')!["errmsg"],
                 style: TextStyle(
                   color: _theme.colorScheme.onSurface,
                 ),
@@ -99,8 +99,8 @@ class _VideoItemState extends State<VideoItem> {
               actions: <Widget>[
                 new FlatButton(
                   child: Text(
-                    LangLocalization.of(context)
-                        .getTranslatedValue('classify')["dialog"],
+                    LangLocalization.of(context)!
+                        .getTranslatedValue('classify')!["dialog"],
                     style: TextStyle(
                       color: _theme.colorScheme.onSurface,
                     ),
@@ -125,9 +125,9 @@ class _VideoItemState extends State<VideoItem> {
     print("Generate PDF");
     Options options = new Options(
         contentType: "application/json",
-        headers: {'Authorization': 'Bearer ' + bearerToken});
+        headers: {'Authorization': 'Bearer ' + bearerToken!});
 
-    Map<String, String> query = {
+    Map<String, String?> query = {
       "userId": userId,
       "videoId": this.widget.videoId
     };
@@ -144,7 +144,7 @@ class _VideoItemState extends State<VideoItem> {
             showNotification: true,
             openFileFromNotification: true,
             fileName: "Report-" +
-                this.widget.videoName.split(".")[0] +
+                this.widget.videoName!.split(".")[0] +
                 "-" +
                 res.data["report"]);
       });
@@ -155,26 +155,26 @@ class _VideoItemState extends State<VideoItem> {
     print("Delete Video");
     Options options = new Options(
         contentType: "application/json",
-        headers: {'Authorization': 'Bearer ' + bearerToken});
+        headers: {'Authorization': 'Bearer ' + bearerToken!});
 
-    Map<String, String> data = {
+    Map<String, String?> data = {
       "userId": userId,
       "videoId": this.widget.videoId
     };
 
-    String text = "";
+    String? text = "";
     try {
       final response = await dio.post(serverURL + '/remove/video',
           data: data, options: options);
 
       if (response.data["success"]) {
-        text = LangLocalization.of(context)
-            .getTranslatedValue('vid-item')["delmsg"];
+        text = LangLocalization.of(context)!
+            .getTranslatedValue('vid-item')!["delmsg"];
       }
     } on DioError catch (e) {
-      if (e.response.statusCode != 200)
-        text = LangLocalization.of(context)
-            .getTranslatedValue('vid-item')["delErrMsg"];
+      if (e.response!.statusCode != 200)
+        text = LangLocalization.of(context)!
+            .getTranslatedValue('vid-item')!["delErrMsg"];
     }
 
     showDialog(
@@ -185,7 +185,7 @@ class _VideoItemState extends State<VideoItem> {
         return AlertDialog(
           backgroundColor: _theme.colorScheme.surface,
           content: Text(
-            text,
+            text!,
             style: TextStyle(
               color: _theme.colorScheme.onSurface,
             ),
@@ -193,8 +193,8 @@ class _VideoItemState extends State<VideoItem> {
           actions: <Widget>[
             new FlatButton(
               child: Text(
-                LangLocalization.of(context)
-                    .getTranslatedValue('classify')["dialog"],
+                LangLocalization.of(context)!
+                    .getTranslatedValue('classify')!["dialog"],
                 style: TextStyle(
                   color: _theme.colorScheme.onSurface,
                 ),
@@ -228,14 +228,14 @@ class _VideoItemState extends State<VideoItem> {
           showNotification: true,
           openFileFromNotification: true,
           fileName:
-              "Classified-" + this.widget.videoName.split(".")[0] + ".mp4");
+              "Classified-" + this.widget.videoName!.split(".")[0] + ".mp4");
     });
   }
 
   @override
   dispose() {
-    if (_videoPlayerController != null) _videoPlayerController.dispose();
-    if (chewieController != null) chewieController.dispose();
+    if (_videoPlayerController != null) _videoPlayerController!.dispose();
+    if (chewieController != null) chewieController!.dispose();
     super.dispose();
   }
 
@@ -243,13 +243,13 @@ class _VideoItemState extends State<VideoItem> {
     print("Play video");
     print(Localizations.localeOf(context).languageCode +
         '_' +
-        Localizations.localeOf(context).countryCode);
+        Localizations.localeOf(context).countryCode!);
 
     _videoPlayerController = VideoPlayerController.network(
-        serverURL + '/get-video/video?videoFile=' + videoFile);
+        serverURL + '/get-video/video?videoFile=' + videoFile!);
 
     chewieController = ChewieController(
-      videoPlayerController: _videoPlayerController,
+      videoPlayerController: _videoPlayerController!,
       autoPlay: true,
       looping: false,
       materialProgressColors: ChewieProgressColors(
@@ -285,7 +285,7 @@ class _VideoItemState extends State<VideoItem> {
                     ),
                     child: Center(
                       child: Chewie(
-                        controller: chewieController,
+                        controller: chewieController!,
                       ),
                     ),
                   ),
@@ -311,8 +311,8 @@ class _VideoItemState extends State<VideoItem> {
                   top: MediaQuery.of(context).size.height * 0.03,
                 ),
                 child: Text(
-                  LangLocalization.of(context)
-                          .getTranslatedValue('vidItem')["filename"] +
+                  LangLocalization.of(context)!
+                          .getTranslatedValue('vidItem')!["filename"] +
                       this.widget.videoName,
                   style: TextStyle(
                     fontSize: 20,
@@ -325,8 +325,8 @@ class _VideoItemState extends State<VideoItem> {
                   top: MediaQuery.of(context).size.height * 0.03,
                 ),
                 child: Text(
-                  LangLocalization.of(context)
-                          .getTranslatedValue('vidItem')["status"] +
+                  LangLocalization.of(context)!
+                          .getTranslatedValue('vidItem')!["status"] +
                       this.widget.status,
                   style: TextStyle(
                     fontSize: 20,
@@ -339,8 +339,8 @@ class _VideoItemState extends State<VideoItem> {
                   top: MediaQuery.of(context).size.height * 0.03,
                 ),
                 child: Text(
-                  LangLocalization.of(context)
-                          .getTranslatedValue('vidItem')["date"] +
+                  LangLocalization.of(context)!
+                          .getTranslatedValue('vidItem')!["date"] +
                       new DateFormat.yMd(
                         'en_IN',
                       ).add_jm().format(
@@ -363,10 +363,10 @@ class _VideoItemState extends State<VideoItem> {
   Widget build(BuildContext context) {
     ThemeChanger _themeChanger = Provider.of(context);
     ThemeData _theme = _themeChanger.getTheme();
-    final List<String> choices = <String>[
-      LangLocalization.of(context).getTranslatedValue('history')["op1"],
-      LangLocalization.of(context).getTranslatedValue('vidItem')["op2"],
-      LangLocalization.of(context).getTranslatedValue('vidItem')["op3"],
+    final List<String?> choices = <String?>[
+      LangLocalization.of(context)!.getTranslatedValue('history')!["op1"],
+      LangLocalization.of(context)!.getTranslatedValue('vidItem')!["op2"],
+      LangLocalization.of(context)!.getTranslatedValue('vidItem')!["op3"],
     ];
     return Card(
       elevation: 2,
@@ -383,7 +383,7 @@ class _VideoItemState extends State<VideoItem> {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: Text(
-                  this.widget.videoName,
+                  this.widget.videoName!,
                   style: TextStyle(
                     color: _theme.colorScheme.onSurface,
                     fontSize: 16,
@@ -406,7 +406,7 @@ class _VideoItemState extends State<VideoItem> {
               color: _theme.colorScheme.surface,
               itemBuilder: (BuildContext context) {
                 return choices.map(
-                  (String choice) {
+                  (String? choice) {
                     int n = choices.indexOf(choice);
                     return PopupMenuItem<String>(
                       value: n.toString(),
@@ -421,7 +421,7 @@ class _VideoItemState extends State<VideoItem> {
                             ),
                           ),
                           Text(
-                            choice,
+                            choice!,
                             style: TextStyle(
                               color: _theme.colorScheme.onSurface,
                             ),
