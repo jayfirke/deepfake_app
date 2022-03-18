@@ -7,8 +7,7 @@ import 'package:deepfake_app/globals.dart';
 import 'package:deepfake_app/localization/LangLocalization.dart';
 import 'package:deepfake_app/permissions.dart';
 import 'package:dio/dio.dart';
-import 'package:ext_storage/ext_storage.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:external_path/external_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -136,8 +135,8 @@ class _VideoItemState extends State<VideoItem> {
         queryParameters: query, options: options);
     if (res.statusCode == 200) {
       await this.service.requestStoragePermission();
-      await ExtStorage.getExternalStoragePublicDirectory(
-              ExtStorage.DIRECTORY_DOWNLOADS)
+      await ExternalPath.getExternalStoragePublicDirectory(
+          ExternalPath.DIRECTORY_DOWNLOADS)
           .then((value) async {
         await FlutterDownloader.enqueue(
             url: serverURL + "/" + res.data["report"],
@@ -220,8 +219,8 @@ class _VideoItemState extends State<VideoItem> {
     print("Download Image");
 
     await this.service.requestStoragePermission();
-    await ExtStorage.getExternalStoragePublicDirectory(
-            ExtStorage.DIRECTORY_DOWNLOADS)
+    await ExternalPath.getExternalStoragePublicDirectory(
+        ExternalPath.DIRECTORY_DOWNLOADS)
         .then((value) async {
       await FlutterDownloader.enqueue(
           url: serverURL + "/get-video/video?videoFile=${this.videoFile}",

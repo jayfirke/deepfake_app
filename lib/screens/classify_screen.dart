@@ -32,10 +32,15 @@ class _ClassifyScreenState extends State<ClassifyScreen> {
   }
 
   _pickVideo() async {
-    final file = await FilePicker.getFile(
+    // final file = await FilePicker.getFile(
+    //   type: FileType.custom,
+    //   allowedExtensions: ['jpeg', 'jpg', 'png', 'mp4'],
+    // );
+    final FilePickerResult? file = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['jpeg', 'jpg', 'png', 'mp4'],
     );
+
 
     if (file != null) {
       if (file.path.split(".")[1] == "mp4") {

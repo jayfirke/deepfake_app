@@ -1,17 +1,21 @@
+
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionsService {
-  final PermissionHandler _permissionHandler = PermissionHandler();
 
-  Future<bool> _requestPermission(PermissionGroup permission) async {
-    var result = await _permissionHandler.requestPermissions([permission]);
-    if (result[permission] == PermissionStatus.granted) {
+  Future<bool> _requestPermission(Permission permission) async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.location,
+      Permission.storage,
+    ].request();
+    print(statuses[Permission.location]);
+    if (statuses[permission] == PermissionStatus.granted) {
       return true;
     }
     return false;
   }
 
   Future<bool> requestStoragePermission() async {
-    return await _requestPermission(PermissionGroup.storage);
+    return await _requestPermission(Permission.storage);
   }
 }
